@@ -2,18 +2,12 @@ package aivle.project.gateway.infra;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.ReactiveSecurityContextHolder;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -37,15 +31,15 @@ public class JwtAuthenticationFilter implements WebFilter {
         Long userId = jwtUtil.getUserId(token);
         String role = jwtUtil.getUserRole(token);
 
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                userId.toString(),
-                null,
-                List.of(new SimpleGrantedAuthority("ROLE_" + role))
-        );
+        ServerHttpRequest mutatedRequest = exchange.getRequest().mutate()
+                .header("X-User-Id", userId.toString())
+                .header("X-User-Role", role)
+                .build();
 
-        SecurityContext context = new SecurityContextImpl(authentication);
+        ServerWebExchange mutatedExchange = exchange.mutate()
+                .request(mutatedRequest)
+                .build();
 
-        return chain.filter(exchange)
-                .contextWrite(ReactiveSecurityContextHolder.withSecurityContext(Mono.just(context)));
+        return chain.filter(mutatedExchange);
     }
 }
