@@ -17,7 +17,7 @@ spring:
            - id: admin
              uri: http://localhost:8081
              predicates:
-               - Path=/api/operation/admin/**,
+               - Path=/api/operation/**,
 
            - id: frontend
              uri: http://localhost:3000
