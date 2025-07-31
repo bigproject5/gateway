@@ -13,30 +13,30 @@ spring:
     web-application-type: reactive
 
   cloud:
-   gateway:
-     server:
-       webflux:
-         routes:
-           - id: admin
-             uri: http://localhost:8081
-             predicates:
-               - Path=/api/operation/**
+    gateway:
+      server:
+        webflux:
+          routes:
+          - id: admin
+            uri: http://localhost:8081
+            predicates:
+              - Path=/api/operation/**
 
-           - id: frontend
-             uri: http://localhost:5173
-             predicates:
-               - Path=/**
-         globalcors:
-           cors-configurations:
-             '[/**]':
-              allowedOrigins:
-                - "http://localhost:5173"
-              allowedMethods:
-                - GET
-                - POST
-                - PUT
-                - DELETE
-                - OPTIONS
-              allowedHeaders:
-                - "*"
-#           allowCredentials: true
+          - id: frontend
+            uri: http://localhost:5173
+            predicates:
+              - Path=/**
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowedOrigins:
+                  - "http://localhost:5173"
+                allowedMethods:
+                  - GET
+                  - POST
+                  - PUT
+                  - DELETE
+                  - OPTIONS
+                allowedHeaders:
+                  - "*"
+#                allowCredentials: true
