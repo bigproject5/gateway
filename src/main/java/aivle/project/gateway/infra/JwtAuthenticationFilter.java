@@ -36,6 +36,7 @@ public class JwtAuthenticationFilter implements WebFilter {
         Long userId = jwtUtil.getUserId(token);
         String role = jwtUtil.getUserRole(token);
         String name = jwtUtil.getUserInfo(token, "name");
+        String taskType = jwtUtil.getUserInfo(token, "taskType");
 
 
         log.info("user id {}, role {}, name {}", userId, role, name);
@@ -45,6 +46,7 @@ public class JwtAuthenticationFilter implements WebFilter {
                 .header("X-User-Id", userId.toString())
                 .header("X-User-Role", role)
                 .header("X-User-Name", encodedName)
+                .header("X-User-Task-Type", taskType)
                 .build();
 
         ServerWebExchange mutatedExchange = exchange.mutate()
