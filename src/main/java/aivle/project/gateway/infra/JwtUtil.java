@@ -2,12 +2,14 @@ package aivle.project.gateway.infra;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.time.LocalDateTime;
 
+@Slf4j
 @Component
 public class JwtUtil {
     @Value("${jwt.secretKey}")
@@ -56,13 +58,13 @@ public class JwtUtil {
                     .parseClaimsJws(token)
                     .getBody();
 
-            System.out.println("[" + now + "]" + "Valid token: " + claims.get("role") + "-" + claims.get("id"));
+            log.info("[{}]Valid token: {}-{}", now, claims.get("role"), claims.get("id"));
             return false;
 
         } catch (ExpiredJwtException e) {
-            System.out.println("[" + now + "]" + "Token expired: " + e.getMessage());
+            log.info("[{}]Token expired: {}", now, e.getMessage());
         } catch (JwtException e) {
-            System.out.println("[" + now + "]" + "Token forgery or other errors: " + e.getMessage());
+            log.info("[{}]Token forgery or other errors: {}", now, e.getMessage());
         }
         return true;
     }
