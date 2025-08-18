@@ -27,6 +27,12 @@ spring:
             predicates:
               - Path=/api/vehicleaudit/**
 
+
+          - id: reports
+            uri: http://localhost:8084
+            predicates:
+              - Path=/api/taskreports/**
+
           - id: frontend
             uri: http://localhost:5173
             predicates:
