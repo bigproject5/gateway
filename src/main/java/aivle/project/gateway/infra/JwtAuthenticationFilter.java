@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
@@ -15,20 +16,45 @@ import reactor.core.publisher.Mono;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter implements WebFilter {
 
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
     private final JwtUtil jwtUtil;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+        ServerHttpRequest request = exchange.getRequest();
+        String path = request.getURI().getPath();
+
+        List<String> authRequiredPaths = List.of(
+                "/api/operation/workers/**",
+                "/api/operation/notices/**",
+                "/api/operation/me",
+                "/api/vehicleaudit/**",
+                "/api/taskreports/**"
+        );
+
+        boolean isAuthRequired = authRequiredPaths.stream()
+                .anyMatch(p -> pathMatcher.match(p, path));
+
+
+
+//        if (!isAuthRequired) {
+//            log.info("Path {} does not require authentication.", path);
+//            return chain.filter(exchange);
+//        }
+//
+//        log.info("Path {} requires authentication.", path);
+
         String authorizationHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            return handleUnauthorized(exchange, "Token is missing");
+        if(authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")){
+            return chain.filter(exchange);
         }
 
         String token = authorizationHeader.substring(7);
@@ -40,7 +66,6 @@ public class JwtAuthenticationFilter implements WebFilter {
         String role = jwtUtil.getUserRole(token);
         String name = jwtUtil.getUserInfo(token, "name");
         String taskType = jwtUtil.getUserInfo(token, "taskType");
-
 
         log.info("user id {}, role {}, name {}", userId, role, name);
 
