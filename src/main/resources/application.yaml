@@ -2,7 +2,7 @@ server:
   port: 8080
 
 jwt:
-  secretKey: ${JWT_SECRET}
+  secretKey: Ag&h2NbdPUef#Ayuep@aif8klvSk!fsAdj3wnk&kaWnv#id0F
   expiredMs: 3600000
 
 spring:
@@ -18,17 +18,17 @@ spring:
         webflux:
           routes:
           - id: operation
-            uri: http://operation:8080
+            uri: http://localhost:8081
             predicates:
               - Path=/api/operation/**
 
           - id: vehicleaudit
-            uri: http://vehicleaudit:8080
+            uri: http://localhost:8082
             predicates:
               - Path=/api/vehicleaudit/**
 
           - id: taskreports
-            uri: http://taskreports:8080
+            uri: http://localhost:8083
             predicates:
               - Path=/api/taskreports/**
 
