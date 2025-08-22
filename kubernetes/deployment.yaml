@@ -16,11 +16,11 @@ spec:
     spec:
       containers:
       - name: gateway
-        image: hyeongmin90/aivle_5_gateway:v1
+        image: hyeongmin90/gateway_app:v2
         ports:
         - containerPort: 8080
         env:
-        - name: JWT_SECRET_KEY
+        - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
               name: gateway-secret # 생성할 쿠버네티스 Secret 이름
