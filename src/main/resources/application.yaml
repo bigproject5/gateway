@@ -2,7 +2,7 @@ server:
   port: 8080
 
 jwt:
-  secretKey: ${JWT_SECRET}
+  secretKey: Ag&h2NbdPUef#Ayuep@aif8klvSk!fsAdj3wnk&kaWnv#id0F
   expiredMs: 3600000
 
 spring:
