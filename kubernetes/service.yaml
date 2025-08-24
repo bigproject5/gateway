@@ -11,4 +11,4 @@ spec:
     - protocol: TCP
       port: 80       # 외부에 노출될 포트
       targetPort: 8080 # 컨테이너가 실행중인 포트
-  type: LoadBalancer # 클라우드 환경에서 외부 IP를 할당받는 LoadBalancer를 생성합니다.
+  type: ClusterIP

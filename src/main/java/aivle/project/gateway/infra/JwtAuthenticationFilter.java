@@ -44,12 +44,12 @@ public class JwtAuthenticationFilter implements WebFilter {
 
 
 
-//        if (!isAuthRequired) {
-//            log.info("Path {} does not require authentication.", path);
-//            return chain.filter(exchange);
-//        }
-//
-//        log.info("Path {} requires authentication.", path);
+        if (!isAuthRequired) {
+            log.info("Path {} does not require authentication.", path);
+            return chain.filter(exchange);
+        }
+
+        log.info("Path {} requires authentication.", path);
 
         String authorizationHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 

@@ -2,7 +2,7 @@ server:
   port: 8080
 
 jwt:
-  secretKey: Ag&h2NbdPUef#Ayuep@aif8klvSk!fsAdj3wnk&kaWnv#id0F
+  secretKey: ${JWT_SECRET}
   expiredMs: 3600000
 
 spring:
@@ -32,15 +32,11 @@ spring:
             predicates:
               - Path=/api/taskreports/**
 
-          - id: frontend
-            uri: http://frontend:5173
-            predicates:
-              - Path=/**
           globalcors:
             cors-configurations:
               '[/**]':
                 allowedOrigins:
-                  - "http://localhost:5173" # Ingress에서 실제 도메인으로 설정 권장
+                  -  ${FRONT_DNS}
                 allowedMethods:
                   - GET
                   - POST
