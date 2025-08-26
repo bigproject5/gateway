@@ -16,12 +16,12 @@ spec:
     spec:
       containers:
       - name: gateway
-        image: #이미지 경로
+        image: 956463122808.dkr.ecr.ap-northeast-2.amazonaws.com/gateway:v4
         ports:
         - containerPort: 8080
         env:
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
-              name: gateway-secret # 생성할 쿠버네티스 Secret 이름
+              name: operation-secrets
               key: jwt.secretKey
