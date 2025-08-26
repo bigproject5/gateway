@@ -33,7 +33,7 @@ spring:
               - Path=/api/taskreports/**
 
           - id: frontend
-            uri: http://frontend:5173
+            uri: http://localhost:5173
             predicates:
               - Path=/**
           globalcors:
