@@ -27,8 +27,8 @@ spring:
             predicates:
               - Path=/api/vehicleaudit/**
 
-          - id: taskreports
-            uri: http://taskreports:8080
+          - id: taskreport
+            uri: http://taskreport:8080
             predicates:
               - Path=/api/taskreports/**
 
